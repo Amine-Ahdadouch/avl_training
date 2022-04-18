@@ -69,6 +69,50 @@ class AVL_Node:
             self = self.rot_left()
             self.update_balance()
         return self
+    
+    def MinValue(self):
+        if self is None or self._left is None:
+            return self
+        return self._left.MinValue()
+
+    #Problem : can't delete root
+    def delete(self, val):
+        if self is None:
+            return self
+        elif val > self._value:
+            self._right = self._right.delete(val)
+        elif val < self._value:
+            self._left = self._left.delete(val)
+        else:
+            if self._left is None:
+                new_root = self._right
+                self = None
+                return new_root
+            elif self._right is None:
+                new_root = self._left
+                self = None
+                return new_root
+            new_root = self._right.MinValue()
+            self._value = new_root._value
+            self._right = self._right.delete(val)
+        
+        self._balance = self.getbalance()
+
+        if self._balance > 1 and self._left._balance >= 0:
+            self = self.rot_right()
+            self.update_balance()
+        elif self._balance < -1 and self._right._balance <= 0:
+            self = self.rot_left()
+            self.update_balance()
+        elif self._balance > 1 and self._left._value < 0:
+            self._left = self._left.rot_left()
+            self = self.rot_right()
+            self.update_balance()
+        elif self._balance < -1 and self._right._value > 0:
+            self._right = self._right.rot_right()
+            self = self.rot_left()
+            self.update_balance()
+        return self
 
     def print_tree(self):
         if not self:
