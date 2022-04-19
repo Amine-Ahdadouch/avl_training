@@ -17,18 +17,22 @@ class AVL_Node:
     def rot_left(self):
         global NB_ROT
         NB_ROT += 1
+
         new_root = self._right
         self._right = new_root._left
         new_root._left = self
+
         new_root._balance = new_root.getbalance()
         return new_root
 
     def rot_right(self):
         global NB_ROT
         NB_ROT += 1
+
         new_root = self._left
         self._left = new_root._right
         new_root._right = self
+
         new_root._balance = new_root.getbalance()
         return new_root
 
@@ -79,9 +83,9 @@ class AVL_Node:
     def delete(self, val):
         if self is None:
             return self
-        elif val > self._value:
+        elif val > self._value and self._right is not None:
             self._right = self._right.delete(val)
-        elif val < self._value:
+        elif val < self._value and self._left is not None:
             self._left = self._left.delete(val)
         else:
             if self._left is None:
